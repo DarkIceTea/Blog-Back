@@ -12,7 +12,7 @@ namespace API.Extensions
         public static WebApplicationBuilder ConfigureApplicationServices(this WebApplicationBuilder builder)
         {
             builder.Services.AddDbContext<AuthDbContext>(options =>
-                options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+                options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("DataBaseMigrator")));
 
             AuthConfiguration.Configure(builder);
             ServicesConfiguration.Configure(builder);

@@ -9,7 +9,7 @@ var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((context, services) =>
     {
         var connectionString = context.Configuration.GetConnectionString("DefaultConnection");
-        
+        Console.WriteLine($"Using connection string: {connectionString}");
         services.AddDbContext<AuthDbContext>(options =>
             options.UseNpgsql(connectionString, b => b.MigrationsAssembly("DataBaseMigrator")));
     })
@@ -17,9 +17,9 @@ var host = Host.CreateDefaultBuilder(args)
     
 Console.WriteLine("Host configured.");
 
-ApplyMigrations(host.Services);
+await ApplyMigrationsAsync(host.Services);
 
-static async Task ApplyMigrations(IServiceProvider services)
+static async Task ApplyMigrationsAsync(IServiceProvider services)
 {
     using var scope = services.CreateScope();
 
