@@ -6,4 +6,13 @@
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\UserApplication\UserApplication.csproj" />
+      <ProjectReference Include="..\UserDomain\UserDomain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="MediatR" Version="12.5.0" />
+    </ItemGroup>
+
 </Project>
