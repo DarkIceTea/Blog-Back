@@ -14,7 +14,7 @@ namespace Application.Services
             if (await userManager.FindByEmailAsync(email) is not null)
                 throw new Exception(ExceptionMessages.UserExist);
 
-            if (role != "doctor" && role != "patient")
+            if (role != "Admin" && role != "User" && role != "Editor")
                 throw new Exception(ExceptionMessages.BadUserRole);
 
             var user = new CustomUser() { Id = Guid.NewGuid(), UserName = userName, Email = email };
