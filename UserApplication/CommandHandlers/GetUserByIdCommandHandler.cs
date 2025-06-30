@@ -1,13 +1,14 @@
 using MediatR;
+using UserApplication.Abstractions;
 using UserApplication.Commands;
 using UserDomain;
 
 namespace UserApplication.CommandHandlers;
 
-public class GetUserByIdCommandHandler : IRequestHandler<GetUserByIdCommand, Profile>
+public class GetUserByIdCommandHandler(IUserService _service) : IRequestHandler<GetUserByIdCommand, Profile>
 {
-    public Task<Profile> Handle(GetUserByIdCommand request, CancellationToken cancellationToken)
+    public async Task<Profile> Handle(GetUserByIdCommand request, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        return await _service.GetUserByIdAsync(request.Id);
     }
 }

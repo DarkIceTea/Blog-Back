@@ -1,12 +1,13 @@
 using MediatR;
+using UserApplication.Abstractions;
 using UserApplication.Commands;
 
 namespace UserApplication.CommandHandlers;
 
-public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand>
+public class DeleteUserCommandHandler(IUserService _service) : IRequestHandler<DeleteUserCommand>
 {
-    public Task Handle(DeleteUserCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteUserCommand request, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        await _service.DeleteUserAsync(request.Id);
     }
 }

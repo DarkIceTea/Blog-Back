@@ -1,10 +1,11 @@
 using Microsoft.EntityFrameworkCore;
+using UserApplication.Abstractions;
 using UserDomain;
 using UserInfrastucture.Data;
 
 namespace UserInfrastucture.Services;
 
-public class ProfileService
+public class ProfileService : IUserService
 {
     UserDbContext _context;
     ProfileService(UserDbContext context)

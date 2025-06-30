@@ -1,3 +1,4 @@
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using UserApplication.Commands;
@@ -25,7 +26,7 @@ public class UserController : ControllerBase
         return Ok(await _sender.Send(new GetUserByIdCommand() {Id = id}));
     }
     [HttpPost("create")]
-    public async Task<IActionResult> CreateUser([FromBody] Profile profile)
+    public async Task<IActionResult> CreateUser([FromBody] Profile profile, IValidator<CreateUserCommand> validator, CancellationToken cancellationToken)
     {
         return Ok(await _sender.Send(profile));
     }
