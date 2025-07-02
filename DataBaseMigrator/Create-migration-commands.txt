@@ -1,0 +1,3 @@
+dotnet ef migrations add Auth-Init --context AuthDbContext --project .\DataBaseMigrator\ --startup-project .\DataBaseMigrator\
+dotnet ef migrations add Profiles-Init --context UserDbContext --project .\DataBaseMigrator\ --startup-project .\DataBaseMigrator\
+dotnet ef migrations add Blogs-Init --context BlogDbContext --project .\DataBaseMigrator\ --startup-project .\DataBaseMigrator\

@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Application.Commands.RegisterUser
 {
-    public class RegisterUserCommand : IRequest<Tokens>
+    public class RegisterUserCommand : IRequest<(Tokens, Guid)>
     {
         public string UserName { get; set; }
         public string Password { get; set; }

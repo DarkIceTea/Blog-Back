@@ -8,9 +8,8 @@ namespace Application.Services
 {
     public class UserService(RoleManager<IdentityRole<Guid>> roleManager, UserManager<CustomUser> userManager, IAccessTokenService accessTokenService, IRefreshTokenService refreshTokenService) : IUserService
     {
-        public async Task<Tokens> RegisterUserAsync(string email, string userName, string password, string role, CancellationToken cancellationToken)
+        public async Task<(Tokens, Guid)> RegisterUserAsync(string email, string userName, string password, string role, CancellationToken cancellationToken)
         {
-
             if (await userManager.FindByEmailAsync(email) is not null)
                 throw new Exception(ExceptionMessages.UserExist);
 
@@ -19,6 +18,8 @@ namespace Application.Services
 
             var user = new CustomUser() { Id = Guid.NewGuid(), UserName = userName, Email = email };
             var res = await userManager.CreateAsync(user, password);
+            if (!res.Succeeded)
+                throw new Exception("Error to create user: " + res.Errors.First().Description);
             await userManager.AddToRoleAsync(user, role);
 
             var refreshToken = await refreshTokenService.CreateRefreshTokenAsync(user, cancellationToken);
@@ -30,7 +31,7 @@ namespace Application.Services
                 RefreshToken = refreshToken.Token
             };
 
-            return tokens;
+            return (tokens, user.Id);
         }
 
         public async Task<Tokens> LoginUserAsync(string email, string password, CancellationToken cancellationToken)

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data
 {
-    public class AuthDbContext(DbContextOptions options) : IdentityDbContext<CustomUser, IdentityRole<Guid>, Guid>(options)
+    public class AuthDbContext(DbContextOptions<AuthDbContext> options) : IdentityDbContext<CustomUser, IdentityRole<Guid>, Guid>(options)
     {
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)

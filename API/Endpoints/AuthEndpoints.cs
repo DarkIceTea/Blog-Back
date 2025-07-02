@@ -16,13 +16,18 @@ namespace API.Endpoints
         {
             _sender = sender;
         }
-        public static async Task<Tokens> Registration([FromBody] RegisterUserCommand command, IValidator<RegisterUserCommand> validator, CancellationToken cancellationToken)
+        public static async Task<IResult> Registration([FromBody] RegisterUserCommand command, IValidator<RegisterUserCommand> validator, CancellationToken cancellationToken)
         {
             var validationResult = await validator.ValidateAsync(command, cancellationToken);
             if (!validationResult.IsValid)
-                throw new Exception("User Invalid");
+                throw new Exception("User Invalid: " + validationResult.Errors.First().ErrorMessage);
 
-            return await _sender.Send(command, cancellationToken);
+            var (tokens, userId) = await _sender.Send(command, cancellationToken);
+            return Results.Ok(new
+            {
+                Tokens = tokens,
+                UserId = userId
+            });
         }
 
         public static async Task<Tokens> Login([FromBody] LoginUserCommand command, CancellationToken cancellationToken)

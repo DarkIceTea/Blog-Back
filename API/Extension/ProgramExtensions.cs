@@ -30,6 +30,7 @@ namespace API.Extensions
 
         public static WebApplication ConfigureMiddlewares(this WebApplication app)
         {
+            app.UseHttpsRedirection();
             //app.UseAuthentication();
             //app.UseAuthorization();
 
