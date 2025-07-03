@@ -4,7 +4,7 @@ using UserApplication.Commands;
 
 namespace UserApplication.CommandHandlers;
 
-public class DeleteUserCommandHandler(IUserService _service) : IRequestHandler<DeleteUserCommand>
+public class DeleteUserCommandHandler(IProfileService _service) : IRequestHandler<DeleteUserCommand>
 {
     public async Task Handle(DeleteUserCommand request, CancellationToken cancellationToken)
     {

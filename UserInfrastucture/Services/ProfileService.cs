@@ -5,10 +5,10 @@ using UserInfrastucture.Data;
 
 namespace UserInfrastucture.Services;
 
-public class ProfileService : IUserService
+public class ProfileService : IProfileService
 {
     UserDbContext _context;
-    ProfileService(UserDbContext context)
+    public ProfileService(UserDbContext context)
     {
         _context = context;
     }

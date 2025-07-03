@@ -24,7 +24,10 @@ public class Program
         app.UseAuthorization();
         app.MapControllers();
         
-        await app.UseOcelot(); 
+        app.MapWhen(context => context.GetEndpoint() == null, ocelotApp =>
+        {
+            ocelotApp.UseOcelot().Wait();
+        });
 
         app.Run();
     }

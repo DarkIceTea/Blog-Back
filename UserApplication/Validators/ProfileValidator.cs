@@ -5,7 +5,7 @@ namespace UserApplication.Validators;
 
 public class ProfileValidator : AbstractValidator<Profile>
 {
-    ProfileValidator()
+    public ProfileValidator()
     {
         RuleFor(x => x.Id)
             .NotEmpty().WithMessage("Id is required.")

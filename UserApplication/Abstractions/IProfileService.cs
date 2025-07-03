@@ -2,7 +2,7 @@ using UserDomain;
 
 namespace UserApplication.Abstractions;
 
-public interface IUserService
+public interface IProfileService
 {
     public Task<Profile> GetUserByIdAsync(Guid id);
     public Task<List<Profile>> GetUsersAsync();

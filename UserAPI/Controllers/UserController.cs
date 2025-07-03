@@ -11,7 +11,7 @@ namespace UserAPI.Controllers;
 public class UserController : ControllerBase
 {
     private readonly ISender _sender;
-    UserController(ISender sender)
+    public UserController(ISender sender)
     {
         _sender = sender;
     }
@@ -26,9 +26,18 @@ public class UserController : ControllerBase
         return Ok(await _sender.Send(new GetUserByIdCommand() {Id = id}));
     }
     [HttpPost("create")]
-    public async Task<IActionResult> CreateUser([FromBody] Profile profile, IValidator<CreateUserCommand> validator, CancellationToken cancellationToken)
+    public async Task<IActionResult> CreateUser([FromBody] Profile profile, CancellationToken cancellationToken)
     {
-        return Ok(await _sender.Send(profile));
+        return Ok(await _sender.Send(new CreateUserCommand
+        {
+            Id = profile.Id,
+            FirstName = profile.FirstName,
+            LastName = profile.LastName,
+            Email = profile.Email,
+            DateOfBirth = profile.DateOfBirth,
+            PhoneNumber = profile.PhoneNumber,
+            PathToAvatar = profile.PathToAvatar
+        }, cancellationToken));
     }
     [HttpPut("update/{id}")]
     public async Task<IActionResult> UpdateUser(Guid id, [FromBody] Profile profile)

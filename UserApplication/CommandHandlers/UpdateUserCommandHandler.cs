@@ -6,7 +6,7 @@ using UserDomain;
 
 namespace UserApplication.CommandHandlers;
 
-public class UpdateUserCommandHandler(IUserService _service, IValidator<Profile> _validator) : IRequestHandler<UpdateUserCommand, Profile>
+public class UpdateUserCommandHandler(IProfileService _service, IValidator<Profile> _validator) : IRequestHandler<UpdateUserCommand, Profile>
 {
     public async Task<Profile> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
     {
@@ -21,7 +21,7 @@ public class UpdateUserCommandHandler(IUserService _service, IValidator<Profile>
             DateOfBirth = request.DateOfBirth,
             PathToAvatar = request.PathToAvatar
         };
-        _validator.ValidateAndThrow(profile);
+        //_validator.ValidateAndThrow(profile);
         return await _service.UpdateUserAsync(profile);
     }
 }

@@ -5,7 +5,7 @@ using UserDomain;
 
 namespace UserApplication.CommandHandlers;
 
-public class GetUserByIdCommandHandler(IUserService _service) : IRequestHandler<GetUserByIdCommand, Profile>
+public class GetUserByIdCommandHandler(IProfileService _service) : IRequestHandler<GetUserByIdCommand, Profile>
 {
     public async Task<Profile> Handle(GetUserByIdCommand request, CancellationToken cancellationToken)
     {
