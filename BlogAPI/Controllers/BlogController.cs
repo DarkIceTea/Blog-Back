@@ -1,5 +1,6 @@
 using BlogApplication.Commands;
 using BlogDomain.Models;
+using BlogInfrastructure.DTO;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,17 +26,9 @@ public class BlogController : ControllerBase
         return Ok(await _sender.Send(new GetBlogByIdCommand() {Id = id}));
     }
     [HttpPost("create")]
-    public async Task<IActionResult> CreateBlog([FromBody] Blog blog, CancellationToken cancellationToken)
+    public async Task<IActionResult> CreateBlog([FromBody] CreateBlogCommand blog, CancellationToken cancellationToken)
     {
-        return Ok(await _sender.Send(new CreateBlogCommand()
-        {
-            Title = blog.Title,
-            Content = blog.Content,
-            CategoryId = blog.Category.Id,
-            Privacy = blog.Privacy,
-            AuthorId = blog.AuthorId,
-            PathsToImages = blog.PathsToImages
-        }));
+        return Ok(await _sender.Send(blog));
     }
     [HttpPut("update/{id}")]
     public async Task<IActionResult> UpdateBlog([FromQuery]Guid id, [FromBody] Blog blog, CancellationToken cancellationToken)

@@ -12,7 +12,17 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Cr
 builder.Services.AddScoped<IBlogService, BlogService>();
 builder.Services.AddDbContext<BlogDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("DataBaseMigrator")));
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new() { Title = "Blog API", Version = "v1" });
+});
 var app = builder.Build();
 app.MapControllers();
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Blog API V1");
+    c.RoutePrefix = string.Empty; // Set Swagger UI at the app's root
+});
         
 app.Run();

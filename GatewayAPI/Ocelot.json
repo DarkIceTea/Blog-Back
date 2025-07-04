@@ -26,6 +26,28 @@
       "UpstreamHttpMethod": [ "Get" ]
     }
   ],
+  "SwaggerEndPoints": [
+    {
+      "Key": "users", 
+      "Config": [
+        {
+          "Name": "User Service", 
+          "Version": "v1",
+          "Url": "https://localhost:7001/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "profiles",
+      "Config": [
+        {
+          "Name": "Profile Service",
+          "Version": "v1",
+          "Url": "https://localhost:7252/swagger/v1/swagger.json"
+        }
+      ]
+    }
+  ],
   "GlobalConfiguration": {
     "BaseUrl": "https://localhost:7000"
   }
