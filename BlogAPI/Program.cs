@@ -10,6 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<CreateBlogCommand>());
 builder.Services.AddScoped<IBlogService, BlogService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddDbContext<BlogDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("DataBaseMigrator")));
 builder.Services.AddSwaggerGen(c =>

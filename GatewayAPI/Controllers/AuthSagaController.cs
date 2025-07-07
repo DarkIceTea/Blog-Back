@@ -11,7 +11,6 @@ public class RegistrationRequest
     public string Email { get; set; }
     public string Password { get; set; }
     public string UserName { get; set; }
-    public string UserRole { get; set; }
     public DateTime DateOfBirth { get; set; }
 }
 
@@ -46,7 +45,7 @@ public class AuthSagaController : ControllerBase
             // Step 1: Create user in UserService
             var userServiceUrl = _configuration["UserService:BaseUrl"];
             var userContent = new StringContent(
-                JsonSerializer.Serialize(new { request.Email, request.Password, request.UserRole, request.UserName }),
+                JsonSerializer.Serialize(new { request.Email, request.Password, UserRole = "User", request.UserName }),
                 Encoding.UTF8, "application/json");
 
             var userResponse = await httpClient.PostAsync($"{userServiceUrl}/register", userContent);

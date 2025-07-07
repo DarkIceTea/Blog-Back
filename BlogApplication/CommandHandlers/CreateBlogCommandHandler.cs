@@ -8,9 +8,11 @@ namespace BlogApplication.CommandHandlers;
 public class CreateBlogCommandHandler : IRequestHandler<CreateBlogCommand, Blog>
 {
     private readonly IBlogService _blogService;
-    public CreateBlogCommandHandler(IBlogService blogService)
+    private readonly ICategoryService _categoryService;
+    public CreateBlogCommandHandler(IBlogService blogService, ICategoryService categoryService)
     {
         _blogService = blogService;
+        _categoryService = categoryService;
     }
 
     public async Task<Blog> Handle(CreateBlogCommand request, CancellationToken cancellationToken)
@@ -19,8 +21,8 @@ public class CreateBlogCommandHandler : IRequestHandler<CreateBlogCommand, Blog>
         {
             Title = request.Title,
             Content = request.Content,
-            Category = new Category { Id = request.CategoryId },
-            Privacy = request.Privacy,
+            Category = await _categoryService.GetCategoryById(request.CategoryId),
+            Privacy = (Privacy)Enum.Parse(typeof(Privacy), request.Privacy, true),
             AuthorId = request.AuthorId,
             PathsToImages = request.PathsToImages
         };
