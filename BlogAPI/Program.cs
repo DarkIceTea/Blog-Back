@@ -17,7 +17,18 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new() { Title = "Blog API", Version = "v1" });
 });
+builder.Services.AddCors(opt =>
+{
+    opt.AddPolicy("AllowAllOrigins", builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
 var app = builder.Build();
+
+app.UseCors("AllowAllOrigins");
 app.MapControllers();
 app.UseSwagger();
 app.UseSwaggerUI(c =>

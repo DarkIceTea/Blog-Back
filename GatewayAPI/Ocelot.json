@@ -25,28 +25,31 @@
       "UpstreamHttpMethod": [ "Post" ]
     },
     {
-      "DownstreamPathTemplate": "/api/users/{id}",
+      "DownstreamPathTemplate": "/api/blog",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 7001 
+          "Port": 7255
         }
       ],
-      "UpstreamPathTemplate": "/api/users/{id}",
-      "UpstreamHttpMethod": [ "Get", "Put", "Delete" ]
+      "UpstreamPathTemplate": "/api/blog",
+      "UpstreamHttpMethod": [ "Post", "Put", "Delete" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
     },
-
     {
-      "DownstreamPathTemplate": "/api/profiles/{id}",
+      "DownstreamPathTemplate": "/api/blog",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 7002 
+          "Port": 7255
         }
       ],
-      "UpstreamPathTemplate": "/api/profiles/{id}",
+      "UpstreamPathTemplate": "/api/blog",
       "UpstreamHttpMethod": [ "Get" ]
     }
   ],
@@ -73,6 +76,9 @@
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "https://localhost:7000"
+    "AuthenticationOptions": {
+      "AuthenticationProviderKey": "Bearer",
+      "AllowedScopes": []
+    }
   }
 }

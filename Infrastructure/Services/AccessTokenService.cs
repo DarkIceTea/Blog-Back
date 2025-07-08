@@ -1,4 +1,6 @@
-﻿using Application.Abstractions;
+﻿using System;
+using System.Collections.Generic;
+using Application.Abstractions;
 using Application.Options;
 using Domain.Models;
 using Microsoft.AspNetCore.Identity;
@@ -7,6 +9,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Application.Services
 {

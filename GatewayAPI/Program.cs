@@ -39,9 +39,18 @@ public class Program
         {
             c.SwaggerDoc("gateway", new OpenApiInfo { Title = "API Gateway", Version = "v1" });
         });
+        builder.Services.AddCors(opt =>
+        {
+            opt.AddPolicy("AllowAllOrigins", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            });
+        });
         
         var app = builder.Build();
-        
+        app.UseCors("AllowAllOrigins");
         app.UseSwagger();
         
         app.UseSwaggerUI(c =>
@@ -64,6 +73,7 @@ public class Program
         app.UseHttpsRedirection();
         
         app.UseRouting();
+        app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
         

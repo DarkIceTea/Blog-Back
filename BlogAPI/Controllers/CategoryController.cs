@@ -14,28 +14,28 @@ public class CategoryController : ControllerBase
     {
         _sender = sender;
     }
-    [HttpGet("get")]
+    [HttpGet]
     public async Task<IActionResult> GetAllCategories()
     {
         return Ok(await _sender.Send(new GetAllCategoriesCommand()));
     }
-    [HttpGet("get/{id}")]
-    public async Task<IActionResult> GetBlogById([FromQuery]Guid id)
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetBlogById([FromRoute]Guid id)
     {
         return Ok(await _sender.Send(new GetCategoryByIdCommand() {Id = id}));
     }
-    [HttpPost("create")]
+    [HttpPost]
     public async Task<IActionResult> CreateBlog([FromBody] CreateCategoryCommand blog, CancellationToken cancellationToken)
     {
         return Ok(await _sender.Send(blog));
     }
-    [HttpPut("update/{id}")]
-    public async Task<IActionResult> UpdateBlog([FromQuery]Guid id, [FromBody] UpdateCategoryCommand blog, CancellationToken cancellationToken)
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateBlog([FromRoute]Guid id, [FromBody] UpdateCategoryCommand blog, CancellationToken cancellationToken)
     {
         return Ok(await _sender.Send(blog));
     }
-    [HttpDelete("delete/{id}")]
-    public async Task<IActionResult> DeleteBlog(Guid id)
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteBlog([FromRoute]Guid id)
     {
         await _sender.Send(new DeleteCategoryCommand() { Id = id });
         return Ok();

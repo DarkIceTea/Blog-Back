@@ -37,7 +37,7 @@ public class BlogService(BlogDbContext _context) : IBlogService
     public async Task<List<Blog>> GetAllBlogs()
     {
         // Assuming _context.Blogs is a DbSet<Blog>
-        return await _context.Blogs.ToListAsync();
+        return await _context.Blogs.Include(b => b.Category).ToListAsync();
     }
 
     public async Task<Blog> UpdateBlog(Blog blog)

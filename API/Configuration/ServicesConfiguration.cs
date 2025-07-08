@@ -1,6 +1,9 @@
-﻿using Application.Abstractions;
+﻿using System;
+using Application.Abstractions;
 using Application.Services;
 using Infrastructure.Repositories;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace API.Configuration
 {

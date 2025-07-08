@@ -1,7 +1,10 @@
-﻿using Application.Options;
+﻿using System;
+using Application.Options;
 using Domain.Models;
 using Infrastructure.Data;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace API.Configuration
 {
