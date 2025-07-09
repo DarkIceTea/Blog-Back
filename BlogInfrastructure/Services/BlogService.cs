@@ -7,24 +7,24 @@ namespace BlogInfrastructure.Services;
 
 public class BlogService(BlogDbContext _context) : IBlogService
 {
-    public async Task<Blog> CreateBlog(Blog blog)
+    public async Task<Post> CreateBlog(Post post)
     {
-        if (blog == null)
+        if (post == null)
         {
-            throw new ArgumentNullException(nameof(blog), "Blog cannot be null");
+            throw new ArgumentNullException(nameof(post), "Blog cannot be null");
         }
 
         // Assuming _context.Blogs is a DbSet<Blog>
-        await _context.Blogs.AddAsync(blog);
+        await _context.Posts.AddAsync(post);
         await _context.SaveChangesAsync();
         
-        return blog;
+        return post;
     }
 
-    public async Task<Blog> GetBlogById(Guid id)
+    public async Task<Post> GetBlogById(Guid id)
     {
         // Assuming _context.Blogs is a DbSet<Blog>
-        var blog = await _context.Blogs.FindAsync(id);
+        var blog = await _context.Posts.FindAsync(id);
         
         if (blog == null)
         {
@@ -34,60 +34,60 @@ public class BlogService(BlogDbContext _context) : IBlogService
         return blog;
     }
 
-    public async Task<List<Blog>> GetAllBlogs()
+    public async Task<List<Post>> GetAllBlogs()
     {
         // Assuming _context.Blogs is a DbSet<Blog>
-        return await _context.Blogs.Include(b => b.Category).ToListAsync();
+        return await _context.Posts.Include(b => b.Category).ToListAsync();
     }
 
-    public async Task<Blog> UpdateBlog(Blog blog)
+    public async Task<Post> UpdateBlog(Post post)
     {
-        if (blog == null)
+        if (post == null)
         {
-            throw new ArgumentNullException(nameof(blog), "Blog cannot be null");
+            throw new ArgumentNullException(nameof(post), "Blog cannot be null");
         }
 
-        _context.Blogs.Update(blog);
+        _context.Posts.Update(post);
         await _context.SaveChangesAsync();
         
-        return blog;
+        return post;
     }
 
     public async Task DeleteBlog(Guid id)
     {
         // Assuming _context.Blogs is a DbSet<Blog>
-        var blog = await _context.Blogs.FindAsync(id);
+        var blog = await _context.Posts.FindAsync(id);
         
         if (blog == null)
         {
             throw new KeyNotFoundException($"Blog with ID {id} not found");
         }
 
-        _context.Blogs.Remove(blog);
+        _context.Posts.Remove(blog);
         await _context.SaveChangesAsync();
     }
 
-    public async Task<List<Blog>> GetBlogsByCategoryId(Guid categoryId)
+    public async Task<List<Post>> GetBlogsByCategoryId(Guid categoryId)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<List<Blog>> GetBlogsByCategoryName(string categoryName)
+    public async Task<List<Post>> GetBlogsByCategoryName(string categoryName)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<List<Blog>> GetBlogsByAuthorId(Guid authorId)
+    public async Task<List<Post>> GetBlogsByAuthorId(Guid authorId)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<List<Blog>> GetBlogsByAuthorName(string authorName)
+    public async Task<List<Post>> GetBlogsByAuthorName(string authorName)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<List<Blog>> GetBlogsByTitle(string title)
+    public async Task<List<Post>> GetBlogsByTitle(string title)
     {
         throw new NotImplementedException();
     }

@@ -3,7 +3,7 @@ using MediatR;
 
 namespace BlogApplication.Commands;
 
-public class GetBlogsByCattegoryCommand : IRequest<List<Blog>>
+public class GetPostsByCattegoryCommand : IRequest<List<Post>>
 {
     public Guid CategoryId { get; set; }
 }

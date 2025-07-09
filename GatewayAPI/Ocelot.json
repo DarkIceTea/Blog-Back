@@ -25,7 +25,7 @@
       "UpstreamHttpMethod": [ "Post" ]
     },
     {
-      "DownstreamPathTemplate": "/api/blog",
+      "DownstreamPathTemplate": "/api/blog/{id}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -33,7 +33,7 @@
           "Port": 7255
         }
       ],
-      "UpstreamPathTemplate": "/api/blog",
+      "UpstreamPathTemplate": "/api/blog/{id}",
       "UpstreamHttpMethod": [ "Post", "Put", "Delete" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
@@ -41,7 +41,7 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/api/blog",
+      "DownstreamPathTemplate": "/api/blog/{id}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -49,7 +49,7 @@
           "Port": 7255
         }
       ],
-      "UpstreamPathTemplate": "/api/blog",
+      "UpstreamPathTemplate": "/api/blog/{id}",
       "UpstreamHttpMethod": [ "Get" ]
     }
   ],

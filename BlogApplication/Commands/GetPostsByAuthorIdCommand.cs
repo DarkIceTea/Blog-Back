@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using MediatR;
 
-public class GetBlogByUserIdCommand : IRequest<List<Blog>>
+public class GetPostsByAuthorIdCommand : IRequest<List<Post>>
 {
     public Guid AuthorId { get; set; }
 }

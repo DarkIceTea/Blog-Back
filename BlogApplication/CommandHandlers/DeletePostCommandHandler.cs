@@ -4,15 +4,15 @@ using MediatR;
 
 namespace BlogApplication.CommandHandlers;
 
-public class DeleteBlogCommandHandler : IRequestHandler<DeleteBlogCommand, Unit>
+public class DeletePostCommandHandler : IRequestHandler<DeletePostCommand, Unit>
 {
     private readonly IBlogService _blogService;
-    public DeleteBlogCommandHandler(IBlogService blogService)
+    public DeletePostCommandHandler(IBlogService blogService)
     {
         _blogService = blogService;
     }
 
-    public async Task<Unit> Handle(DeleteBlogCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(DeletePostCommand request, CancellationToken cancellationToken)
     {
         await _blogService.DeleteBlog(request.Id);
         return Unit.Value;

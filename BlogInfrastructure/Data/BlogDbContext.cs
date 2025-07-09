@@ -15,11 +15,7 @@ public class BlogDbContext : DbContext
         // Configure your entity mappings here
     }
 
-    public DbSet<Blog> Blogs { get; set; }
+    public DbSet<Post> Posts { get; set; }
     public DbSet<Category> Categories { get; set; }
-    
-    // Define DbSet properties for your entities
-    // public DbSet<Blog> Blogs { get; set; }
-    // public DbSet<Post> Posts { get; set; }
-    // Add other DbSet properties as needed
+    public DbSet<Tag> Tags { get; set; }
 }

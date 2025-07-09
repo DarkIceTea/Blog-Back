@@ -5,15 +5,15 @@ using MediatR;
 
 namespace BlogApplication.CommandHandlers;
 
-public class GetBlogByIdCommandHandler : IRequestHandler<GetBlogByIdCommand, Blog>
+public class GetPostByIdCommandHandler : IRequestHandler<GetPostByIdCommand, Post>
 {
     private readonly IBlogService _blogService;
-    public GetBlogByIdCommandHandler(IBlogService blogService)
+    public GetPostByIdCommandHandler(IBlogService blogService)
     {
         _blogService = blogService;
     }
 
-    public async Task<Blog> Handle(GetBlogByIdCommand request, CancellationToken cancellationToken)
+    public async Task<Post> Handle(GetPostByIdCommand request, CancellationToken cancellationToken)
     {
         return await _blogService.GetBlogById(request.Id);
     }
