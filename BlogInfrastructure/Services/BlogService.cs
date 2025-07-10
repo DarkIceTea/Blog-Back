@@ -17,15 +17,15 @@ public class BlogService(BlogDbContext _context) : IBlogService
         // Assuming _context.Blogs is a DbSet<Blog>
         await _context.Posts.AddAsync(post);
         await _context.SaveChangesAsync();
-        
+
         return post;
     }
 
     public async Task<Post> GetBlogById(Guid id)
     {
-        // Assuming _context.Blogs is a DbSet<Blog>
-        var blog = await _context.Posts.FindAsync(id);
-        
+        var blog = await _context.Posts.Include(b => b.Category)
+            .Include(b => b.Tags).FirstOrDefaultAsync(b => b.Id == id);
+
         if (blog == null)
         {
             throw new KeyNotFoundException($"Blog with ID {id} not found");
@@ -37,7 +37,8 @@ public class BlogService(BlogDbContext _context) : IBlogService
     public async Task<List<Post>> GetAllBlogs()
     {
         // Assuming _context.Blogs is a DbSet<Blog>
-        return await _context.Posts.Include(b => b.Category).ToListAsync();
+        return await _context.Posts.Include(b => b.Category)
+            .Include(b => b.Tags).ToListAsync();
     }
 
     public async Task<Post> UpdateBlog(Post post)
@@ -49,7 +50,7 @@ public class BlogService(BlogDbContext _context) : IBlogService
 
         _context.Posts.Update(post);
         await _context.SaveChangesAsync();
-        
+
         return post;
     }
 
@@ -57,7 +58,7 @@ public class BlogService(BlogDbContext _context) : IBlogService
     {
         // Assuming _context.Blogs is a DbSet<Blog>
         var blog = await _context.Posts.FindAsync(id);
-        
+
         if (blog == null)
         {
             throw new KeyNotFoundException($"Blog with ID {id} not found");

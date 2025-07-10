@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using BlogApplication.Abstractions;
 using BlogApplication.Commands;
 using BlogInfrastructure.Data;
@@ -11,6 +12,7 @@ builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<CreatePostCommand>());
 builder.Services.AddScoped<IBlogService, BlogService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ITagService, TagService>();
 builder.Services.AddDbContext<BlogDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("DataBaseMigrator")));
 builder.Services.AddSwaggerGen(c =>
@@ -26,6 +28,11 @@ builder.Services.AddCors(opt =>
                .AllowAnyHeader();
     });
 });
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles; //TODO: Make DTO Instead of this
+    });
 var app = builder.Build();
 
 app.UseCors("AllowAllOrigins");

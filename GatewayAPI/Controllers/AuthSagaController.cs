@@ -1,11 +1,11 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using System.Text.Json;
 using GatewayAPI.Responses;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GatewayAPI.Controllers;
-
-// DTO для запроса регистрации (тот же, что мы обсуждали ранее)
+public record LoginRequest(string Email, string Password);
 public class RegistrationRequest
 {
     public string Email { get; set; }
@@ -13,8 +13,6 @@ public class RegistrationRequest
     public string UserName { get; set; }
     public DateTime DateOfBirth { get; set; }
 }
-
-// DTO для ответа от UserService
 public class UserCreationResponse
 {
     public Guid UserId { get; set; }
@@ -71,7 +69,7 @@ public class AuthSagaController : ControllerBase
                 }),
                 Encoding.UTF8, "application/json");
 
-            var profileResponse = await httpClient.PostAsync($"{profileServiceUrl}/api/user/create", profileContent);
+            var profileResponse = await httpClient.PostAsync($"{profileServiceUrl}/api/user", profileContent);
 
             if (!profileResponse.IsSuccessStatusCode)
             {
@@ -92,11 +90,66 @@ public class AuthSagaController : ControllerBase
             if (newUserId.HasValue)
             {
                 var userServiceUrl = _configuration["UserService:BaseUrl"];
-                await httpClient.DeleteAsync($"{userServiceUrl}/api/users/{newUserId.Value}");
+                //await httpClient.DeleteAsync($"{userServiceUrl}/api/users/{newUserId.Value}"); //TODO: make delete method in AuthService
             }
 
             return StatusCode(500,
                 "An error occurred during registration. The operation has been rolled back." + ex.Message);
+        }
+    }
+     [HttpPost("login")]
+    public async Task<IActionResult> Login([FromBody] LoginRequest request)
+    {
+        var httpClient = _httpClientFactory.CreateClient();
+        Guid? newUserId = null;
+
+        try
+        {
+            // Step 1: Get Tokens form AuthService
+            var userServiceUrl = _configuration["UserService:BaseUrl"];
+            var userContent = new StringContent(
+                JsonSerializer.Serialize(new { request.Email, request.Password}),
+                Encoding.UTF8, "application/json");
+
+            var authResponse = await httpClient.PostAsync($"{userServiceUrl}/login", userContent);
+
+            if (!authResponse.IsSuccessStatusCode)
+            {
+                return StatusCode((int)authResponse.StatusCode, await authResponse.Content.ReadAsStringAsync());
+            }
+
+            var tokensToSend = JsonSerializer.Deserialize<Tokens>(
+                await authResponse.Content.ReadAsStringAsync(),
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            //step 2: Get profile from UserService
+            var tokenHandler = new JwtSecurityTokenHandler();
+            if (!tokenHandler.CanReadToken(tokensToSend.AccessToken))
+                throw new Exception("Invalid access token.");
+            var jwtToken = tokenHandler.ReadJwtToken(tokensToSend.AccessToken);
+            Guid id = Guid.Parse(jwtToken.Claims.First(claim => claim.Type == JwtRegisteredClaimNames.Sub).Value);
+            
+            var profileServiceUrl = _configuration["ProfileService:BaseUrl"];
+            
+            var profileResponse = await httpClient.GetAsync($"{profileServiceUrl}/api/user/{id}");
+
+            if (!profileResponse.IsSuccessStatusCode)
+            {
+                throw new Exception("Failed to create profile.");
+            }
+
+            return Ok(new
+            {
+                Message = "Login successful.",
+                Tokens = tokensToSend,
+                Profile = JsonSerializer.Deserialize<Profile>(profileResponse.Content.ReadAsStringAsync().Result,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true })
+            });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500,
+                "An Error Occured during logging" + ex.Message);
         }
     }
 }

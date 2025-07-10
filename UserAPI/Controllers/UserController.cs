@@ -15,17 +15,17 @@ public class UserController : ControllerBase
     {
         _sender = sender;
     }
-    [HttpGet("get")]
+    [HttpGet]
     public async Task<IActionResult> GetAllUsers()
     {
         return Ok(await _sender.Send(new GetUsersCommand()));
     }
-    [HttpGet("get/{id}")]
-    public async Task<IActionResult> GetUserById([FromQuery]Guid id)
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetUserById([FromRoute]Guid id)
     {
         return Ok(await _sender.Send(new GetUserByIdCommand() {Id = id}));
     }
-    [HttpPost("create")]
+    [HttpPost]
     public async Task<IActionResult> CreateUser([FromBody] Profile profile, CancellationToken cancellationToken)
     {
         return Ok(await _sender.Send(new CreateUserCommand
@@ -39,8 +39,8 @@ public class UserController : ControllerBase
             PathToAvatar = profile.PathToAvatar
         }, cancellationToken));
     }
-    [HttpPut("update/{id}")]
-    public async Task<IActionResult> UpdateUser(Guid id, [FromBody] Profile profile)
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateUser([FromRoute]Guid id, [FromBody] Profile profile)
     {
         return Ok(await _sender.Send(new UpdateUserCommand
         {
@@ -53,8 +53,8 @@ public class UserController : ControllerBase
             PathToAvatar = profile.PathToAvatar
         }));
     }
-    [HttpDelete("delete/{id}")]
-    public async Task<IActionResult> DeleteUser(Guid id)
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteUser([FromRoute]Guid id)
     {
         await _sender.Send(new DeleteUserCommand { Id = id });
         return Ok();
