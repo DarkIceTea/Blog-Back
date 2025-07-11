@@ -12,7 +12,6 @@ public class BlogDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        // Configure your entity mappings here
     }
 
     public DbSet<Post> Posts { get; set; }

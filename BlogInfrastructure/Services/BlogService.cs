@@ -92,4 +92,36 @@ public class BlogService(BlogDbContext _context) : IBlogService
     {
         throw new NotImplementedException();
     }
+
+    public async Task<List<Post>> SearchBlog(string searchTerm)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<List<Post>> SearchBlogByTitle(string searchTerm)
+    {
+        if (string.IsNullOrWhiteSpace(searchTerm))
+        {
+            throw new ArgumentException("Search term cannot be null or empty", nameof(searchTerm));
+        }
+
+        return await _context.Posts
+            .Where(b => b.Title.ToLower().Contains(searchTerm.ToLower()))
+            .Include(b => b.Category)
+            .Include(b => b.Tags)
+            .ToListAsync();
+    }
+    public async Task<List<Post>> GetBlogsByTagName(string tagName)
+    {
+        if (string.IsNullOrWhiteSpace(tagName))
+        {
+            throw new ArgumentException("Tag name cannot be null or empty", nameof(tagName));
+        }
+
+        return await _context.Posts
+            .Where(b => b.Tags.Any(t => t.Name.ToLower() == tagName.ToLower()))
+            .Include(b => b.Category)
+            .Include(b => b.Tags)
+            .ToListAsync();
+    }
 }

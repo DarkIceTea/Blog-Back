@@ -28,11 +28,6 @@ builder.Services.AddCors(opt =>
                .AllowAnyHeader();
     });
 });
-builder.Services.AddControllers()
-    .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles; //TODO: Make DTO Instead of this
-    });
 var app = builder.Build();
 
 app.UseCors("AllowAllOrigins");

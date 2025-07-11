@@ -14,4 +14,7 @@ public interface IBlogService
     public Task<List<Post>> GetBlogsByAuthorId(Guid authorId);
     public Task<List<Post>> GetBlogsByAuthorName(string authorName);
     public Task<List<Post>> GetBlogsByTitle(string title);
+    public Task<List<Post>> SearchBlog(string searchTerm);
+    public Task<List<Post>> SearchBlogByTitle(string searchTerm);
+    public Task<List<Post>> GetBlogsByTagName(string tagName);
 }
